@@ -17,6 +17,7 @@
 %        W : Obtained basis matrix (m x k)
 %        H : Obtained coefficients matrix (k x n)
 
+% Here we set V to be known instead of a stream of input
 function [W,H] = onmf(V, k)
 
 [m, n] = size(V);
@@ -25,7 +26,6 @@ function [W,H] = onmf(V, k)
 par.m = m;
 par.n = n;
 par.max_iter = 100;
-par.min_iter = 20;
 par.max_time = 1e6;
 par.tol = 1e-3;
 
@@ -33,32 +33,48 @@ par.tol = 1e-3;
 W = rand(m,k);
 H = rand(k,n);
 
-for t = 1: max_iter
+btk = 0;
+
+for t = 1: n
     % draw a data sample v_t from P
-    v_t = V(:, t);
+    vt = V(:, t);
     
     % Learn the coefficient vector h_t per algorithm 2
-    
+    ht0 = H(:,t);
+    ht = learning_h_t(ht0, W, vt, btk, 100);
+    H(:,t) = ht;
     
     % Update the basis matrix from W_t-1 to W_t
+    for a = 1: size(ht)
+        W(:,a) = W(:,a) .* (vt * ht(a) ./ (W * ht) / ht(a));
+    end
     
 end
 
-function ht = learning_h_t(ht0, Wt1, vt, btk, g)
+end
+
+function ht = learning_h_t(ht, Wt1, vt, btk, g)
 % this is corresponding to algorithm 2 of the paper
 % <Inputs>
-%       ht0: initial coefficient vector h_t_0
+%       ht: initial coefficient vector h_t_0
 %       Wt1: basis matrix W_(t-1)
-%       v_t: data sample
+%       vt: data sample
 %       btk: step size beta_t_k
 %       g: maximum number of iterations gama
 %<Outputs>
 %       ht: final coefficient vector h_t := h_t_gama
 
+% Try multiplicative update rule proposed in Lee & Seung's "Algorithms for Non-negative Matrix Factorization"
+% as a good compromise of between speed and ease of implementation.
+% Here we can ignore btk for now
+
 for k = 1:g
-    
+    for a = 1: size(ht)
+        ht(a) = ht(a) *  (sum( Wt1(:,a) .* vt ./ (Wt1 * ht)) / sum(Wt1(:,a)));
+    end
 end
 
+end
 
 
 

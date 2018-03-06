@@ -13,3 +13,4 @@ A = rand(m,n);
 % [W,H,iter,HIS]=nmf(A,k,'verbose',1,'type','sparse','nnls_solver','bp','alpha',1.1,'beta',1.3);
 % [W,H,iter,HIS]=nmf(A,k,'verbose',2,'type','plain','w_init',rand(m,k));
 
+A - W * H
