@@ -37,14 +37,12 @@ for t = 1: max_iter
     % draw a data sample v_t from P
     v_t = V(:, t);
     
-    % Learn the coefficient vector h_t per algorithm 2
+    % Learn the coefficient vector h_t
     
-    
-    % Update the basis matrix from W_t-1 to W_t
     
 end
 
-function ht = learning_h_t(ht0, Wt1, vt, btk, g)
+function [] = learning_h_t(ht0, Wt1, vt, btk, g)
 % this is corresponding to algorithm 2 of the paper
 % <Inputs>
 %       ht0: initial coefficient vector h_t_0
@@ -53,11 +51,9 @@ function ht = learning_h_t(ht0, Wt1, vt, btk, g)
 %       btk: step size beta_t_k
 %       g: maximum number of iterations gama
 %<Outputs>
-%       ht: final coefficient vector h_t := h_t_gama
+%       h_t: final coefficient vector h_t := h_t_gama
 
-for k = 1:g
-    
-end
+
 
 
 
