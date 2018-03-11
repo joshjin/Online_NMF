@@ -1,4 +1,6 @@
-% TODO: implement onmf with general diverence as introduced in the paper:
+% TODO:  check   1) implement onmf with general diverence as introduced in the paper
+%                            2) vectorize equation
+
 % Online Nonnegative Matrix Factorization with General Divergences
 
 % <Inputs>
@@ -46,10 +48,12 @@ for t = 1: n
     
     % Update the basis matrix from W_t-1 to W_t
     for a = 1: size(ht)
-        W(:,a) = W(:,a) .* (vt * ht(a) ./ (W * ht) / ht(a));
+            W(:,a) = W(:,a) .* (vt * ht(a) ./ (W * ht) / ht(a));
     end
     
 end
+
+H = W' * V;
 
 end
 
@@ -66,7 +70,7 @@ function ht = learning_h_t(ht, Wt1, vt, btk, g)
 
 % Try multiplicative update rule proposed in Lee & Seung's "Algorithms for Non-negative Matrix Factorization"
 % as a good compromise of between speed and ease of implementation.
-% Here we can ignore btk for now
+% Here we can ignore btk for now.
 
 for k = 1:g
     for a = 1: size(ht)
