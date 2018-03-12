@@ -23,6 +23,7 @@
 function [W,H] = onmf(V, k)
 
 [m, n] = size(V);
+batch_size = 5;
 
 % Default configuration
 par.m = m;
@@ -64,25 +65,30 @@ acc = 0;
 % 
 % end
 
-
-for t = 1: 100
+for t = 1: n/batch_size
     % draw a data sample v_t from P
-    vt = V(:, t);
+    vt = V(:, (t-1)*batch_size+1:t*batch_size);
     
     % Learn the coefficient vector h_t per algorithm 2
-    ht0 = rand(k,1) ;
+    ht0 = rand(k,batch_size) ;
     ht = learning_h_t(ht0, W, vt, btk, 100);
-    H(:,t) = ht;
     
     % Update the basis matrix from W_t-1 to W_t
     for it = 1:1
-    for a = 1: size(ht)
-            W(:,a) = W(:,a) .* (vt * ht(a) ./ (W * ht)) / ht(a);
+%     for a = 1: size(ht)
+%             W(:,a) = W(:,a) .* (vt * ht(a) ./ (W * ht)) / ht(a);
+%     end
+    for i = 1:size(W, 1)
+        for a = size(W, 2)
+            temp = W * ht;
+            top = sum (ht(a,:) .* vt(i,:) ./ temp(i,:));
+            W(i,a) = W(i,a) * ( top / sum(ht(a,:), 2));
+        end
     end
     end
     
     disp(t);
-    disp(sum(abs(vt - W * ht) > .5) / 784 * 100);
+    disp(sum(sum(abs(vt - W * ht) > .5)) / 784 / 20 * 100);
     
 %     acc = acc + sum(abs(vt - W * ht) > .5);
     
@@ -94,13 +100,14 @@ for t = 1: 100
 %     end
 end
 
-for t = 1:100
-    ht = learning_h_t(H(:,t), W, V(:,t), btk, 100);
-    H(:,t) = ht;
-end
+% for t = 1:n
+%     ht = learning_h_t(H(:,t), W, V(:,t), btk, 100);
+%     H(:,t) = ht;
+% end
 
 % disp("inner check");
 % disp(sum(sum(abs(V - W * H) > .5))/784);
+
 H = pinv(W) * V;
 % disp(W * H)
 
@@ -123,9 +130,17 @@ function ht = learning_h_t(ht, Wt1, vt, btk, g)
 
 for k = 1:g
     
-    % multiplicative
-    for a = 1: size(ht)
-        ht(a) = ht(a) *  (sum( Wt1(:,a) .* vt ./ (Wt1 * ht)) / sum(Wt1(:,a)));
+%     % multiplicative
+%     for a = 1: size(ht)
+%         ht(a) = ht(a) *  (sum( Wt1(:,a) .* vt ./ (Wt1 * ht)) / sum(Wt1(:,a)));
+%     end
+    
+    for u = 1:size(ht, 2)
+        for a = 1:size(ht,1)
+            temp = Wt1 * ht;
+            top = sum (Wt1(:,a) .* vt(:,u) ./ temp(:,u));
+            ht(a,u) = ht(a,u) * (top / sum(Wt1(:,a)));
+        end
     end
     
     % additive

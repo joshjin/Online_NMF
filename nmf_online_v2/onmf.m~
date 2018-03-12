@@ -101,7 +101,7 @@ end
 
 % disp("inner check");
 % disp(sum(sum(abs(V - W * H) > .5))/784);
-H = pinv(W) * V;
+H = W' * V;
 % disp(W * H)
 
 end

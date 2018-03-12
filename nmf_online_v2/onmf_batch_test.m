@@ -1,11 +1,11 @@
 % ------------------------------ Usage examples ------------------------------
-m = 784;
-n = 100;
-k = 20;
+m = 300;
+n = 200;
+k = 25;
 
 A = rand(m,n);
 
-[W,H] = onmf(A,k);
+[W,H] = onmf_batch(A,k);
 
 [W2, H2] = nnmf(A, k);
 
@@ -33,3 +33,6 @@ d2 = A - W2*H2;
 d2 = abs(d2);
 disp("percentage of nnmf entries diff > .5: ");
 disp(sum(d2(:) > .5) / (m*n) * 100);
+
+
+% disp(sum(sum(d(:,1:20) > .5)) / 20 / m * 100);
