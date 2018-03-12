@@ -20,56 +20,30 @@
 %        H : Obtained coefficients matrix (k x n)
 
 % Here we set V to be known instead of a stream of input
-function [W,H] = onmf_batch(V, k)
+function [W,H] = addi_update_nmf(V, k)
 
 [m, n] = size(V);
-batch_size = 5;
-
-% Default configuration
-par.m = m;
-par.n = n;
-par.max_iter = 100;
-par.max_time = 1e6;
-par.tol = 1e-3;
+batch_size = 20;
 
 % intialize W and H
 W = rand(m,k);
 H = rand(k,n);
 
-btk = 0;
-
-acc = 0; 
-
 for t = 1: n/batch_size
-    % draw a data sample v_t from P
+    step_size = 10000 / (10000 + t * batch_size);
     vt = V(:, (t-1)*batch_size+1:t*batch_size);
+    
+    Z2 = ones(m,batch_size);
     
     % Learn the coefficient vector h_t per algorithm 2
     ht0 = rand(k,batch_size) ;
-    ht = learning_h_t(ht0, W, vt, btk, 100);
-    
-    % Update the basis matrix from W_t-1 to W_t
-    for it = 1:1
-    for i = 1:size(W, 1)
-        for a = size(W, 2)
-            temp = W * ht;
-            top = sum (ht(a,:) .* vt(i,:) ./ temp(i,:));
-            W(i,a) = W(i,a) * ( top / sum(ht(a,:), 2));
-        end
-    end
-    end
-    
-    disp(t);
-    disp(sum(sum(abs(vt - W * ht) > .5)) / 784 / 20 * 100);
-    
+    ht = learning_h_t(ht0, W, vt, step_size, 100, Z2);
+
+    Z1 = vt ./ (W*ht);
+    W = W + step_size * (Z1 * ht' - Z2 * ht');
 end
 
-
-H = pinv(W) * V;
-
-end
-
-function ht = learning_h_t(ht, Wt1, vt, btk, g)
+function ht = learning_h_t(ht, W, vt, btk, g, Z2)
 % this is corresponding to algorithm 2 of the paper
 % <Inputs>
 %       ht: initial coefficient vector h_t_0
@@ -84,19 +58,18 @@ function ht = learning_h_t(ht, Wt1, vt, btk, g)
 % as a good compromise of between speed and ease of implementation.
 % Here we can ignore btk for now.
 
-for k = 1:g
-    for u = 1:size(ht, 2)
-        for a = 1:size(ht,1)
-            temp = Wt1 * ht;
-            top = sum (Wt1(:,a) .* vt(:,u) ./ temp(:,u));
-            ht(a,u) = ht(a,u) * (top / sum(Wt1(:,a)));
-        end
-    end
-
-end
+for r = 1:g
+    
+    Z1 = vt ./ (W*ht);
+    ht = ht + btk * (W' * Z1 - W' * Z2);
+    
 end
 
+end
 
+H = pinv(W) * V;
+
+end
 
 
 
