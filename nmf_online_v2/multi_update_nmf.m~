@@ -37,30 +37,30 @@ H = rand(k,n);
 
 for t = 1: 100
     
-%     for u = 1:size(H, 2)
-%         for a = 1:size(H,1)
-%             temp = W * H;
-%             top = sum (W(:,a) .* V(:,u) ./ temp(:,u));
-%             H(a,u) = H(a,u) * (top / sum(W(:,a)));
-%         end
-%     end
-%    
-%     
-%     % Update the basis matrix from W_t-1 to W_t
-%     for i = 1:size(W, 1)
-%         for a = size(W, 2)
-%             temp = W * H;
-%             top = sum (H(a,:) .* V(i,:) ./ temp(i,:));
-%             W(i,a) = W(i,a) * ( top / sum(H(a,:), 2));
-%         end
-%     end
+    for u = 1:size(H, 2)
+        for a = 1:size(H,1)
+            temp = W * H;
+            top = sum (W(:,a) .* V(:,u) ./ temp(:,u));
+            H(a,u) = H(a,u) * (top / sum(W(:,a)));
+        end
+    end
+   
+    
+    % Update the basis matrix from W_t-1 to W_t
+    for i = 1:size(W, 1)
+        for a = size(W, 2)
+            temp = W * H;
+            top = sum (H(a,:) .* V(i,:) ./ temp(i,:));
+            W(i,a) = W(i,a) * ( top / sum(H(a,:), 2));
+        end
+    end
 
 % Eclidean distance multiplicative rule
-    temp1 = (W' * V) ./ (W' * W * H);
-    H = H .* temp1;
-    
-    temp2 = (V * H') ./ (W * H * H');
-    W = W .* temp2;
+%     temp1 = (W' * V) ./ (W' * W * H);
+%     H = H .* temp1;
+%     
+%     temp2 = (V * H') ./ (W * H * H');
+%     W = W .* temp2;
     
 end
 

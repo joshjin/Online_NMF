@@ -5,4 +5,4 @@ k = 15;
 
 % disp(V - W * H);
 
-disp(sum (sum (abs(V - W*H) > 0.5)) / 300 / 200);
+disp(sum (sum (abs(V - W*H) > 0.5)) / 300 / 200 * 100);

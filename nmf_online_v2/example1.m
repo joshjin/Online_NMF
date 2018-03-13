@@ -5,7 +5,7 @@ k = 20;
 
 A = rand(m,n);
 
-[W,H] = onmf(A,k);
+[W,H] = onmf_batch(A,k);
 
 [W2, H2] = nnmf(A, k);
 
