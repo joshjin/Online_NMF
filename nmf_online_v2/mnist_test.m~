@@ -3,7 +3,7 @@ addpath('/..');
 mnist_data = load_MNIST_images('t10k-images.idx3-ubyte');
 
 k = 25;
-sample_size = 2000;
+sample_size = 1000;
 
 V = mnist_data(:, 1:sample_size);
 V = V + ( rand(size(V)) < 0.95 ) * 1e-3 ;
@@ -13,7 +13,7 @@ V = V + ( rand(size(V)) < 0.95 ) * 1e-3 ;
 % [W, H] = onmf(V,k);
 [W2, H2] = nnmf(V, k);
 % [W3, H3] = multi_update_nmf(V, k);
-% [W3, H3] = addi_update_nmf(V, k);
+% [W3, H3] = multi_update_nmf(V, k);
 disp('nmf is done');
 
 mkdir('mnist_features') ;
@@ -30,7 +30,7 @@ disp("batch");
 disp(sum(d(:) > .01) / (784 * sample_size) * 100);
 disp("nnmf");
 disp(sum(d2(:) > .01 ) / (784 * sample_size) * 100);
-disp("add");
+disp("multi");
 % disp(sum(d3(:) > .01) / (784 * sample_size) * 100);
 
 for i = 1:20
@@ -42,11 +42,11 @@ for i = 1:20
     imwrite(ori, sprintf('mnist_features/f_%d_original.jpg', i'));
     imwrite(pic, sprintf('mnist_features/f_%d_onmf.jpg', i'));
     imwrite(pic2, sprintf('mnist_features/f_%d_nnmf.jpg', i'));
-%     imwrite(pic3, sprintf('mnist_features/f_%d_a_u_nmf.jpg', i'));
+    imwrite(pic3, sprintf('mnist_features/f_%d_m_u_nmf.jpg', i'));
 end
 
 for i = 1:k
     imwrite(reshape(W(:, i), [28, 28]), sprintf('mnist_features/Z_basis_batch_%d.jpg', i'));
     imwrite(reshape(W2(:, i), [28, 28]), sprintf('mnist_features/Z_basis_nnmf_%d.jpg', i'));
-%     imwrite(reshape(W3(:, i), [28, 28]), sprintf('mnist_features/Z_basis_addi_%d.jpg', i'));
+    imwrite(reshape(W3(:, i), [28, 28]), sprintf('mnist_features/Z_basis_multi_%d.jpg', i'));
 end

@@ -41,6 +41,8 @@ for t = 1: n/batch_size
 
     Z1 = vt ./ (W*ht);
     W = W + step_size * (Z1 * ht' - Z2 * ht');
+    W(W<0) = 0;
+    W(W>1) = 1;
 end
 
 function ht = learning_h_t(ht, W, vt, btk, g, Z2)
@@ -62,7 +64,8 @@ for r = 1:g
     
     Z1 = vt ./ (W*ht);
     ht = ht + btk * (W' * Z1 - W' * Z2);
-    
+    ht(ht<0) = 0;
+    ht(ht>1) = 1;
 end
 
 end

@@ -33,6 +33,8 @@ par.max_time = 1e6;
 par.tol = 1e-3;
 
 % intialize W and H
+% W = rand(m,k);
+% H = rand(k,n);
 W = rand(m,k);
 H = rand(k,n);
 
@@ -46,8 +48,8 @@ for t = 1: n/batch_size
     
     % Learn the coefficient vector h_t per algorithm 2
     ht = rand(k,1);
-    for e = 1:100
-    ht = learning_h_t(ht, W, vt, btk, 1);
+    for e = 1:1
+    ht = learning_h_t(ht, W, vt, btk, 100);
     
     % Update the basis matrix from W_t-1 to W_t
 %     for it = 1:1
@@ -62,9 +64,12 @@ for t = 1: n/batch_size
     
     temp2 = (vt * ht') ./ (W * ht * ht');
     W = W .* temp2;
+    W(W<0) = 0;
+    W(W>1) = 1;
     end
+    
     disp(t);
-    disp(sum(sum(abs(vt - W * ht) > .5)) / 784 / 20 * 100);
+    disp(sum(sum(abs(vt - W * ht) > .5)) / 784 / batch_size * 100);
     
 end
 
@@ -99,7 +104,8 @@ for k = 1:g
 %     end
     temp1 = (Wt1' * vt) ./ (Wt1' * Wt1 * ht);
     ht = ht .* temp1;
-
+    ht(ht<0) = 0;
+    ht(ht>1) = 1;
 end
 end
 
