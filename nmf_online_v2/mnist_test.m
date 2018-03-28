@@ -2,7 +2,7 @@ addpath('/..');
 
 mnist_data = load_MNIST_images('t10k-images.idx3-ubyte');
 
-k = 25;
+k = 10;
 sample_size = 2000;
 
 V = mnist_data(:, 1:sample_size);

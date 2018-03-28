@@ -8,7 +8,7 @@ sample_size = 100;
 V = mnist_data(:, 1:sample_size)+1e-3;
 
 %[W, H] = RPMF(V, k, 1, 1, 1e-6);
-[W2, H2] = onlineRPMF(V, k, 1, 1, 1e-6, ones(size(V)));
+[W2, H2] = onlineRPMF(V, k, 1, 1, 1e-3, ones(size(V)));
 disp('nmf is done');
 
 mkdir('mnist_features') ;

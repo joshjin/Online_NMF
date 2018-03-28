@@ -1,27 +1,36 @@
 %% PCA demo -- digit
 clear
+
+% read data into var: data
 fid = fopen( 't10k-images.idx3-ubyte', 'r' );
 data = fread( fid, 'uint8' );
 fclose(fid);
 data = data(17:end);
-disp(size(data))
 data = reshape( data, 28*28, 10000 )';
-short_data = data(1:512,:,:);
+short_data = data(1:512,:);
+disp('data size');
+disp(size(data));
+disp('short data size');
+disp(size(short_data));
 
+% read label into var: label
 fid = fopen( 't10k-labels.idx1-ubyte', 'r' );
 label = fread( fid, 'uint8' );
 fclose(fid);
 label = label(9:end);
+disp('label size');
 disp(size(label))
 
 show_data = reshape(data,10000,28,28);
+disp('show data size');
 disp(size(show_data));
-disp('Expanding Images to 3x3 Patch\n');
+
+disp('Expanding Images to 3x3 Patch');
 % V = expand3x3(data);
 V = expand3x3(short_data);
 [len,~,~] = size(V);
 V = reshape(V,len,9);
-V = V + 1e-3;
+V = V + (V < 0.95) * 1e-3;
 disp('NNMF Optimizing Step 1')
 [W1,H1] = nmf_step_new(V,26,20);
 disp('finished all');

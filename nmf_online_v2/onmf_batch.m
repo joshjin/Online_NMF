@@ -23,7 +23,7 @@
 function [W,H] = onmf_batch(V, k)
 
 [m, n] = size(V);
-batch_size = 5;
+batch_size = 50;
 
 % Default configuration
 par.m = m;
