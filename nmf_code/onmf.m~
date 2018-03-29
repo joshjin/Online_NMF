@@ -41,13 +41,12 @@ par.tol = 1e-3;
 ht = rand(k,1);
 ht = learning_h_t(ht, W, V, btk, 100);
 temp2 = (V * ht') ./ (W * ht * ht');
-% disp(min(temp2));
+disp(min(temp2));
 W = W .* temp2;
 % W(W<0) = 0;
 % W(W>1) = 1;
-min_W = min(min(W)');
-max_W = max(max(W)');
-% disp(min_W);
+min_W_tmp = min(temp2);
+max_W_tmp = max(temp2);
 if min_W < 0
     if max_W + abs(min_W) > 1
         W = (W + abs(min_W)) / (max_W - min_W);
