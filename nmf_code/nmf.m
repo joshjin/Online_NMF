@@ -19,7 +19,7 @@ label = fread( fid, 'uint8' );
 fclose(fid);
 label = label(9:end);
 disp('label size');
-disp(size(label))
+disp(size(label));
 
 show_data = reshape(data,10000,28,28);
 disp('show data size');
