@@ -33,7 +33,7 @@ V = reshape(V,len,9);
 V = V + (V < 0.95) * 1e-3;
 disp('NNMF Optimizing Step 1')
 [W1,H1] = nmf_step_new(V,26,20);
-disp('finished all');
+
 % disp('NNMF Optimizing Step 2')
 % [W2,H2] = nmf_step(H1',24,20);
 % disp('NNMF Optimizing Step 3')
