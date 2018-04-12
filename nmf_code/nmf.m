@@ -61,6 +61,8 @@ disp(size(H10',1)/36);
 
 [output, dv_input, grad] = linear_layer(flatten, params_linear, 10, 0);
 disp(size(output));
+out_after_softmax = softmax(output);
+disp(out_after_softmax);
 
 % [len,~,~] = size(V);
 % V = reshape(V,len,9);
