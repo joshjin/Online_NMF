@@ -2,7 +2,7 @@
 clear
 
 size_before_flatten = 6;
-
+params_linear = struct('W', rand(10,2880), 'b', rand(10,1));
 
 % read data into var: data
 fid = fopen( 't10k-images.idx3-ubyte', 'r' );
@@ -59,9 +59,9 @@ disp(size(H10',1)/36);
 [flatten] = flatten_layer(H10',size_before_flatten,80);
 [data_length, im_size] = size(flatten);
 
-params = ['W', rand(10,im_size), 'b', rand(10,1)];
-[output, dv_input, grad] = linear_layer(flatten, params, 10, 0);
+[output, dv_input, grad] = linear_layer(flatten, params_linear, 10, 0);
 disp(size(output));
+
 % [len,~,~] = size(V);
 % V = reshape(V,len,9);
 % disp('NNMF Optimizing\n')

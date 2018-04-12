@@ -2,7 +2,10 @@ function [output, dv_input, grad] = linear_layer(input, params, num_out, backpro
 
 batch_size = size(input,1);
 output = zeros(num_out, batch_size);
-output = params.W * input + params.b;
+output = params.W * input' + params.b;
+
+dv_input = [];
+grad = struct('W',[],'b',[]);
 
 if backprop
 	dv_input = zeros(size(input));
