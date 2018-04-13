@@ -6,7 +6,7 @@ data = reshape(data,patch_size,patch_size,data_len/(patch_size*patch_size),feat_
 disp('reshaped data');
 disp(size(data));
 V = merge_local_feat(data);
-disp('size of V after merge feature');
+disp('size of');
 disp(size(V));
 [W,H] = nnmf(V',feat_out);
 end

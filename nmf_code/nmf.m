@@ -23,6 +23,11 @@ fclose(fid);
 label = label(9:end);
 disp('label size');
 disp(size(label));
+[len,~] = size(label);
+label_mat = zeros(10, len);
+for i = 1:len
+    label_mat(label(i)+1,i) = 1;
+end
 
 show_data = reshape(data,10000,28,28);
 disp('show data size');
@@ -55,14 +60,34 @@ disp('NNMF Optimizing Step 9')
 disp('NNMF Optimizing Step 10')
 [W10,H10] = nmf_step(H9',8,80);
 
+
+
 disp(size(H10',1)/36);
 [flatten] = flatten_layer(H10',size_before_flatten,80);
 [data_length, im_size] = size(flatten);
+A1 = zeros(10, data_length);
+[Z1, dv_input, grad] = linear_layer(flatten, params_linear, 10, 0);
+disp('size of Z1');
+disp(size(Z1));
 
-[output, dv_input, grad] = linear_layer(flatten, params_linear, 10, 0);
-disp(size(output));
-out_after_softmax = softmax(output);
-disp(out_after_softmax);
+layers = [imageInputLayer([2880 1])
+          fullyConnectedLayer(144)
+          reluLayer
+          fullyConnectedLayer(10)
+          softmaxLayer
+          classificationLayer];
+
+options = trainingOptions('sgdm');
+
+net = trainNetwork(flatten',layers,options);
+
+      
+      
+% net = trainSoftmaxLayer(Z1, A1);
+% disp(net);
+% tmp = softmax(Z1);
+
+
 
 % [len,~,~] = size(V);
 % V = reshape(V,len,9);
