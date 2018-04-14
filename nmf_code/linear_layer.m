@@ -1,4 +1,4 @@
-function [output, dv_input, grad] = linear_layer(input, params, num_out, backprop)
+function [output, dv_input, grad] = linear_layer(input, params, num_out, backprop, dv_output)
 
 batch_size = size(input,1);
 output = zeros(num_out, batch_size);
@@ -14,7 +14,6 @@ if backprop
 	% TODO: BACKPROP CODE
     dv_input = params.W' * dv_output;
     grad.W = dv_output * input';
-    grad.b = dv_output * ones([20, 1]);
-
+    grad.b = dv_output * ones([num_out, 1]);
 end
 

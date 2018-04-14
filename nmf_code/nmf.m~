@@ -2,7 +2,8 @@
 clear
 
 size_before_flatten = 6;
-params_linear = struct('W', rand(10,2880), 'b', rand(10,1));
+params_linear_1 = struct('W', rand(144,2880), 'b', rand(144,1));
+params_linear_2 = struct('W', rand(10,144), 'b', rand(10,1));
 
 % read data into var: data
 fid = fopen( 't10k-images.idx3-ubyte', 'r' );
@@ -23,11 +24,7 @@ fclose(fid);
 label = label(9:end);
 disp('label size');
 disp(size(label));
-[len,~] = size(label);
-label_mat = zeros(10, len);
-for i = 1:len
-    label_mat(label(i)+1,i) = 1;
-end
+label_mat = turn_label_to_mat(label);
 
 show_data = reshape(data,10000,28,28);
 disp('show data size');
@@ -60,24 +57,38 @@ disp('NNMF Optimizing Step 9')
 disp('NNMF Optimizing Step 10')
 [W10,H10] = nmf_step(H9',8,80);
 
+save('trainedH10.mat','H10')
+
+% flatten layer
 disp(size(H10',1)/36);
 [flatten] = flatten_layer(H10',size_before_flatten,80);
 [data_length, im_size] = size(flatten);
-A1 = zeros(10, data_length);
-[Z1, dv_input, grad] = linear_layer(flatten, params_linear, 10, 0);
+% forward propagation (not debuged)
+[Z1, ~] = linear_layer(flatten, params_linear_1, 144, 0, 0);
 disp('size of Z1');
 disp(size(Z1));
+[A1, ~] = relu_layer(Z1, 0, 0);
+disp('size of A1');
+disp(size(A1));
+[Z2, ~] = linear_layer(flatten, params_linear_2, 10, 0, 0);
+disp('size of Z2');
+disp(size(Z2));
+[A2, ~] = relu_layer(Z2, 0, 0);
+disp('size of A2');
+disp(size(A2));
+% TODO: Loss
 
-layers = [imageInputLayer([28 28 1])
-          fullyConnectedLayer(144)
-          reluLayer
-          fullyConnectedLayer(10)
-          softmaxLayer
-          classificationLayer];
 
-options = trainingOptions('sgdm');
-
-net = trainNetwork(flatten',layers,options);
+% layers = [imageInputLayer([2880 1])
+%           fullyConnectedLayer(144)
+%           reluLayer
+%           fullyConnectedLayer(10)
+%           softmaxLayer
+%           classificationLayer];
+% 
+% options = trainingOptions('sgdm');
+% 
+% net = trainNetwork(flatten', layers, options);
 
       
       
