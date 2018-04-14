@@ -78,7 +78,6 @@ disp('size of A2');
 disp(size(A2));
 % TODO: loss_f
 
-
 % TODO: backward propagation
 
 
