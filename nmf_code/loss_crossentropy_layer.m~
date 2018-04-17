@@ -9,25 +9,17 @@ disp(size(labels));
 % TODO: CALCULATE LOSS
 % if isfield(hyper_params, 'num_dims') num_dims = hyper_params.num_dims;
 % else num_dims = 2; end
-batch_size = size(input, 2);
+batch_size = size(input, num_dims);
 % new_labels = zeros([batch_size, size(input,1)]);
 % for i = 1:batch_size
 %     new_labels(i,labels(i)) = 1;
 % end
-labels = labels';
 
 loss = 0;
 for i = 1:batch_size
-    disp('labels(1,:)');
-    disp(size(labels(1,:)));
-    disp('log(input(:,i)');
-    disp(size(log(input(:,i))));
-    loss = loss + labels(i,:) * log(input(:,i));
+    loss = loss + new_labels(i,:) * log(input(:,i));
 end
 loss = - loss / batch_size;
-
-disp('loss');
-disp(loss);
 
 dv_input = zeros(size(input));
 if backprop

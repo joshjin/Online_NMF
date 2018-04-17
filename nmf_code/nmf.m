@@ -76,8 +76,9 @@ disp(size(Z2));
 [A2, ~] = relu_layer(Z2, 0, 0);
 disp('size of A2');
 disp(size(A2));
+A3 = softmax(A2);
 % TODO: loss_f
-
+[loss, dv_input] = loss_crossentropy_layer(A3, label_mat(:,1:256), 1);
 % TODO: backward propagation
 
 
