@@ -27,21 +27,24 @@ label_temp = label_temp(9:end);
 label_test = label_temp(256*(i-1)+1:256*i);
 label(label==0)=10;
 
-V = expand3x3(data_test);
-[len,~,~] = size(V);
-V = reshape(V,len,9);
-V = V + (V < 0.95) * 1e-3;
+nV = expand3x3(data_test);
+[len,~,~] = size(nV);
+nV = reshape(nV,len,9);
+% nV = nV + (V < 0.95) * 1e-3;
 
-H1= nmf_step_in_test(V, nmf_param.W1,26);
-H2= nmf_step_in_test(H1', nmf_param.W2,24);
-H3= nmf_step_in_test(H2', nmf_param.W3,22);
-H4= nmf_step_in_test(H3', nmf_param.W4,20);
-H5= nmf_step_in_test(H4', nmf_param.W5,18);
-H6= nmf_step_in_test(H5', nmf_param.W6,16);
-H7= nmf_step_in_test(H6', nmf_param.W7,14);
-H8= nmf_step_in_test(H7', nmf_param.W8,12);
-H9= nmf_step_in_test(H8', nmf_param.W9,10);
-H10= nmf_step_in_test(H9', nmf_param.W10,8);
+nH1= nmf_step_in_test(nV, nmf_param.W1,26);
+% disp('diff1: ');
+% disp(abs(nH1-H1));
+% disp(max(max(abs(nH1-H1))));
+nH2= nmf_step_in_test(nH1', nmf_param.W2,24);
+nH3= nmf_step_in_test(nH2', nmf_param.W3,22);
+nH4= nmf_step_in_test(nH3', nmf_param.W4,20);
+nH5= nmf_step_in_test(nH4', nmf_param.W5,18);
+nH6= nmf_step_in_test(nH5', nmf_param.W6,16);
+nH7= nmf_step_in_test(nH6', nmf_param.W7,14);
+nH8= nmf_step_in_test(nH7', nmf_param.W8,12);
+nH9= nmf_step_in_test(nH8', nmf_param.W9,10);
+nH10= nmf_step_in_test(nH9', nmf_param.W10,8);
 
 [s1, s2] = size(H10);
 s0 = 6;

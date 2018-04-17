@@ -39,7 +39,7 @@ params = struct('learning_rate',lr,'weight_decay',wd,'batch_size',batch_size,'sa
 
 numIters = size(input,4) / batch_size;
 
-max_epochs = 50;
+max_epochs = 5;
 
 % read label into var: label
 fid = fopen( 't10k-labels.idx1-ubyte', 'r' );
