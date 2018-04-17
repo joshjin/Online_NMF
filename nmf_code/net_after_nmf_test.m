@@ -9,7 +9,7 @@ nmf_param = file.nmf_param;
 batch_size = 8;
 iters = 32;
 
-i = 2;   % set of testing
+i = 1;   % set of testing
 
 % read data into var: data
 fid = fopen( 't10k-images.idx3-ubyte', 'r' );
@@ -25,6 +25,12 @@ label_temp = fread( fid, 'uint8' );
 fclose(fid);
 label_temp = label_temp(9:end);
 label_test = label_temp(256*(i-1)+1:256*i);
+label(label==0)=10;
+
+V = expand3x3(data_test);
+[len,~,~] = size(V);
+V = reshape(V,len,9);
+V = V + (V < 0.95) * 1e-3;
 
 H1= nmf_step_in_test(V, nmf_param.W1,26);
 H2= nmf_step_in_test(H1', nmf_param.W2,24);
