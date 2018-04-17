@@ -2,6 +2,12 @@ function [output, dv_input, grad] = linear_layer(input, params, num_out, backpro
 
 batch_size = size(input,1);
 output = zeros(num_out, batch_size);
+disp('size of W');
+disp(size(params.W));
+disp('input size');
+disp(size(input));
+disp('size of b');
+disp(size(params.b));
 output = params.W * input' + params.b;
 
 dv_input = [];

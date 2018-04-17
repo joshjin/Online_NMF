@@ -1,4 +1,4 @@
-function [ output, dv_input, grad ] = relu_layer(input, params, hyper_params, backprop, dv_output)
+function [ output, dv_input, grad ] = relu_layer(input, backprop, dv_output)
 output = max(input,0);
 
 dv_input = [];

@@ -59,18 +59,18 @@ disp('NNMF Optimizing Step 10')
 
 save('trainedH10.mat','H10')
 
-% flatten layer
+% TODO: flatten layer
 disp(size(H10',1)/36);
 [flatten] = flatten_layer(H10',size_before_flatten,80);
 [data_length, im_size] = size(flatten);
-% forward propagation (not debuged)
+% TODO: forward propagation (not debuged)
 [Z1, ~] = linear_layer(flatten, params_linear_1, 144, 0, 0);
 disp('size of Z1');
 disp(size(Z1));
 [A1, ~] = relu_layer(Z1, 0, 0);
 disp('size of A1');
 disp(size(A1));
-[Z2, ~] = linear_layer(flatten, params_linear_2, 10, 0, 0);
+[Z2, ~] = linear_layer(A1', params_linear_2, 10, 0, 0);
 disp('size of Z2');
 disp(size(Z2));
 [A2, ~] = relu_layer(Z2, 0, 0);

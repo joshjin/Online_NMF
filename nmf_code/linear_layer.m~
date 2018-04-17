@@ -1,8 +1,0 @@
-function [output, dv_input, grad] = linear_layer(input, patch_size, feat, params, num_out)
-
-batch_size = size(input,1);
-output = params.W * input + params.b;
-
-
-end
-
