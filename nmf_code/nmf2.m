@@ -55,7 +55,7 @@ disp('NNMF Optimizing Step 9')
 disp('NNMF Optimizing Step 10')
 [W10,H10] = nmf_step(H9',8,80);
 
-
+save('trainedH10.mat','H10')
 
 % 
 % disp(size(H10',1)/36);
