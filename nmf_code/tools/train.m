@@ -31,6 +31,10 @@ update_params = struct('learning_rate',lr,'weight_decay',wd);
 % 
 % file = file_name(params.epoch,:);
 % fid = fopen(file,'w');
+
+overall_right = 0;
+
+
 for i = 1:numIters
 	% TODO: Training code
     % The basic loop goes like this:
@@ -43,12 +47,19 @@ for i = 1:numIters
     batch = input(:,:,:,(i-1)*batch_size+1:i*batch_size);
     batch_label = label((i-1)*batch_size+1:i*batch_size,:);
     [output,activations] = inference_(model,batch);
+    
+    [~,I] = max(output);
+    comp = I' == batch_label;
+    overall_right = overall_right + sum(comp);
+    accuracy = 100 * overall_right / (i*batch_size);
+    
     [loss, dv_input] = loss_crossentropy(output, batch_label, update_params, true);
     [grad] = calc_gradient_(model, batch, activations, dv_input);
     model = update_weights_(model,grad,update_params);
     if mod(i, 10)==0
         X=sprintf('EPOCH:   %d   ITER:   %d   LOSS:   %1.2d\n',params.epoch,i,loss);
         disp(X);
+        disp(accuracy);
 %         fprintf(fid, X);
     end
 end

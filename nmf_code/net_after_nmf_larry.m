@@ -3,8 +3,8 @@ addpath pcode;
 addpath layers;
 addpath tools;
 
-file = load('trainedH10.mat', 'H10');
-H10 = file.H10;
+file = load('trainedH10.mat');
+H10 = file.nmf_param.H10;
 disp("H10 size: ");
 disp(size(H10));
 [s1, s2] = size(H10);
@@ -46,6 +46,7 @@ fid = fopen( 't10k-labels.idx1-ubyte', 'r' );
 label = fread( fid, 'uint8' );
 fclose(fid);
 label = label(9:end);
+label = label(1:256);
 label(label==0)=10;
 
 for epoch=1:max_epochs
