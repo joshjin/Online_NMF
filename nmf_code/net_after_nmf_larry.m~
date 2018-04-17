@@ -1,0 +1,18 @@
+% neural net script after having H10
+addpath pcode;
+addpath layers;
+
+input = load('trainedH10.mat', 'H10');
+H10 = input.H10;
+disp("H10 size: ");
+disp(size(H10));
+
+% flaten
+% fully connected
+% loss function
+
+l = [
+    init_layer('flatten',struct('num_dims',4))
+	init_layer('linear',struct('num_in',720,'num_out',10))
+	init_layer('softmax',[]
+    ];
