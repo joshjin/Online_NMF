@@ -35,9 +35,10 @@ if backprop
     divisor = - batch_size;
     log_part = ones(size(input)) ./ input;
     for i = 1:batch_size
-        dv_input(:,i) = (new_labels(i,:) .* log_part(:,i)')';
+        dv_input(:,i) = (labels(i,:) .* log_part(:,i)')';
     end
     dv_input = dv_input / divisor;
-
+    disp('dv_input');
+    disp(size(dv_input));
 end
 
