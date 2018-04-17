@@ -18,10 +18,10 @@ labels = labels';
 
 loss = 0;
 for i = 1:batch_size
-    disp('labels(1,:)');
-    disp(size(labels(1,:)));
-    disp('log(input(:,i)');
-    disp(size(log(input(:,i))));
+%     disp('labels(1,:)');
+%     disp(size(labels(1,:)));
+%     disp('log(input(:,i)');
+%     disp(size(log(input(:,i))));
     loss = loss + labels(i,:) * log(input(:,i));
 end
 loss = - loss / batch_size;
