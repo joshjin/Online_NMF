@@ -6,10 +6,9 @@ model = my_model.model;
 file = load('trainedH10.mat');
 nmf_param = file.nmf_param;
 
-batch_size = 8;
-iters = 32;
+batch_size = 256;
 
-i = 1;   % set of testing
+i = 15;   % set of testing
 
 % read data into var: data
 fid = fopen( 't10k-images.idx3-ubyte', 'r' );
@@ -25,7 +24,7 @@ label_temp = fread( fid, 'uint8' );
 fclose(fid);
 label_temp = label_temp(9:end);
 label_test = label_temp(256*(i-1)+1:256*i);
-label(label==0)=10;
+label_test(label_test==0)=10;
 
 nV = expand3x3(data_test);
 [len,~,~] = size(nV);
@@ -46,16 +45,17 @@ nH8= nmf_step_in_test(nH7', nmf_param.W8,12);
 nH9= nmf_step_in_test(nH8', nmf_param.W9,10);
 nH10= nmf_step_in_test(nH9', nmf_param.W10,8);
 
-[s1, s2] = size(H10);
+[s1, s2] = size(nH10);
 s0 = 6;
 feat_num = 80;
 % flaten
 % fully connected
 % loss function
-input = reshape(H10, feat_num, s0, s0, s2/s0/s0); 
+input = reshape(nH10, feat_num, s0, s0, s2/s0/s0); 
 input = reshape(input, s0, s0, feat_num, s2/s0/s0);    % new size = 6x6x80x256
 
 overall_right = 0;
+iters = size(input,4) / batch_size;
 for i=1:iters
     batch = input(:,:,:,(i-1)*batch_size+1:i*batch_size);
     batch_label = label_test((i-1)*batch_size+1:i*batch_size,:);

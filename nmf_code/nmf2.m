@@ -4,13 +4,15 @@ clear
 size_before_flatten = 6;
 params_linear = struct('W', rand(10,2880), 'b', rand(10,1));
 
+sample_size = 5000;
+
 % read data into var: data
 fid = fopen( 't10k-images.idx3-ubyte', 'r' );
 data = fread( fid, 'uint8' );
 fclose(fid);
 data = data(17:end);
 data = reshape( data, 28*28, 10000 )';
-short_data = data(1:256,:);
+short_data = data(1:sample_size,:);
 disp('data size');
 disp(size(data));
 disp('short data size');
@@ -24,9 +26,9 @@ label = label(9:end);
 disp('label size');
 disp(size(label));
 
-show_data = reshape(data,10000,28,28);
-disp('show data size');
-disp(size(show_data));
+% show_data = reshape(data,10000,28,28);
+% disp('show data size');
+% disp(size(show_data));
 
 disp('Expanding Images to 3x3 Patch');
 % V = expand3x3(data);

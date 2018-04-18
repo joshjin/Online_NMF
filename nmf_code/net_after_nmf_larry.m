@@ -3,6 +3,8 @@ addpath pcode;
 addpath layers;
 addpath tools;
 
+sample_size = 5000;
+
 file = load('trainedH10.mat');
 H10 = file.nmf_param.H10;
 disp("H10 size: ");
@@ -16,17 +18,22 @@ feat_num = 80;
 input = reshape(H10, feat_num, s0, s0, s2/s0/s0); 
 input = reshape(input, s0, s0, feat_num, s2/s0/s0);    % new size = 6x6x80x256
 l = [
-    init_layer('flatten',struct('num_dims',4))
-	init_layer('linear',struct('num_in',s0*s0*feat_num,'num_out',10))
+    init_layer('flatten',struct('num_dims',4))    
+%     init_layer('linear',struct('num_in',s0*s0*feat_num,'num_out',10))
+    
+    init_layer('linear',struct('num_in',s0*s0*feat_num,'num_out',2880))
+    
+    init_layer('linear',struct('num_in',2880,'num_out',10))
+    
 	init_layer('softmax',[])
     ];
 
 % Learning rate
-lr = 0.5;
+lr = 0.1;
 % Weight decay
-wd = .0003;
+wd = .0001;
 % Batch size
-batch_size = 8;
+batch_size = 1;
 
 model = init_model(l,[s0 s0 feat_num],10,true);
 
@@ -46,7 +53,7 @@ fid = fopen( 't10k-labels.idx1-ubyte', 'r' );
 label = fread( fid, 'uint8' );
 fclose(fid);
 label = label(9:end);
-label = label(1:256);
+label = label(1:sample_size);
 label(label==0)=10;
 
 for epoch=1:max_epochs
