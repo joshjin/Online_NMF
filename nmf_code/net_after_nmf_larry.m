@@ -3,7 +3,7 @@ addpath pcode;
 addpath layers;
 addpath tools;
 
-sample_size = 5000;
+sample_size = 1000;
 
 file = load('trainedH10.mat');
 H10 = file.nmf_param.H10;
@@ -29,11 +29,11 @@ l = [
     ];
 
 % Learning rate
-lr = 0.1;
+lr = 0.2;
 % Weight decay
 wd = .0001;
 % Batch size
-batch_size = 1;
+batch_size = 10;
 
 model = init_model(l,[s0 s0 feat_num],10,true);
 

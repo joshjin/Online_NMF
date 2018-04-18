@@ -4,7 +4,7 @@ clear
 size_before_flatten = 6;
 params_linear = struct('W', rand(10,2880), 'b', rand(10,1));
 
-sample_size = 5000;
+sample_size = 1000;
 
 % read data into var: data
 fid = fopen( 't10k-images.idx3-ubyte', 'r' );

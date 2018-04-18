@@ -17,7 +17,7 @@ assert(num_in == hyper_params.num_in,...
 
 output = zeros(hyper_params.num_out, batch_size);
 % TODO: FORWARD CODE
-output = params.W * input + params.b;
+output = abs(params.W * input + params.b);
 
 dv_input = [];
 grad = struct('W',[],'b',[]);
